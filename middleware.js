@@ -23,14 +23,14 @@ export const middleware = async (req) => {
     }
 
     // 6. Redirect to /dashboard if the user is authenticated
-    if (
-        isPublicRoute &&
-        session?.userId &&
-        !req.nextUrl.pathname.startsWith('/profile')
-    ) {
-        return NextResponse.redirect(new URL('/profile', req.nextUrl))
-    }
-    return NextResponse.next()
+    // if (
+    //     isPublicRoute &&
+    //     session?.userId &&
+    //     !req.nextUrl.pathname.startsWith('/profile')
+    // ) {
+    //     return NextResponse.redirect(new URL('/profile', req.nextUrl))
+    // }
+    // return NextResponse.next()
 }
 // Routes Middleware should not run on
 export const config = {

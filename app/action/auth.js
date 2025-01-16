@@ -1,8 +1,8 @@
 "use server"
 import axios from "axios";
-
+import { cookies } from "next/headers";
 import { loginFormSchema } from "../lib/defination";
-import { createSession } from "../lib/session";
+import { createSession, deleteSession } from "../lib/session";
 
 export const login = async (state, formData) => {
     // Validate form data using the schema
@@ -20,14 +20,14 @@ export const login = async (state, formData) => {
         } else {
             const { email, password } = validatedFields?.data
             console.log(validatedFields.data);
-            
+
             const response = await axios.post(`http://localhost:3001/login`, { email, password })
             if (response?.data?.success) {
                 const userEmail = response?.data?.user?.email
                 await createSession(userEmail)
-                
-            }else{
-                return{errors: 'an error occured while login'}
+
+            } else {
+                return { errors: 'an error occured while login' }
             }
             return response.data;
         }
@@ -36,3 +36,8 @@ export const login = async (state, formData) => {
 
     }
 };
+
+export async function logout() {
+    deleteSession()
+    redirect('/login')
+}
