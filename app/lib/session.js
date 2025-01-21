@@ -1,6 +1,7 @@
 "use server";
 import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 //  1st step
 const secretKey = process.env.SESSION_SECRET
@@ -30,10 +31,10 @@ export const decrypt = async (session) => {
     }
 }
 
-export const createSession = async (userId) => {
+export const createSession = async (userId, userRole) => {
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     // encrypt the user id
-    const session = await encrypt({ userId, expiresAt })
+    const session = await encrypt({ userId, userRole, expiresAt })
     console.log(`session to be stored in cookies: ${session}`);
 
     const cookieStore = await cookies();

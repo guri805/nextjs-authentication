@@ -18,9 +18,9 @@ export const middleware = async (req) => {
     const cookie = (await cookies()).get('session')?.value
     const session = await decrypt(cookie)
 
-    if (isProtectedRoute && !session?.userId) {
-        return NextResponse.redirect(new URL('/', req.nextUrl))
-    }
+    // if (isProtectedRoute && !session?.userId) {
+    //     return NextResponse.redirect(new URL('/', req.nextUrl))
+    // }
 
     // 6. Redirect to /dashboard if the user is authenticated
     // if (
@@ -30,7 +30,7 @@ export const middleware = async (req) => {
     // ) {
     //     return NextResponse.redirect(new URL('/profile', req.nextUrl))
     // }
-    // return NextResponse.next()
+    return NextResponse.next()
 }
 // Routes Middleware should not run on
 export const config = {

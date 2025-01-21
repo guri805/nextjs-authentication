@@ -1,13 +1,21 @@
-"use client";
-const { useActionState } = require("react");
-const { login } = require("../action/auth");
+'use client';
+import { useRouter } from 'next/navigation';
+import { login } from '../action/auth';
+import { useActionState, useEffect } from 'react';
 
-const Login = () => {
+export default function LoginForm() {
+    const router = useRouter();
 
-    const [state, action, pending] = useActionState(login, undefined);
+    // Manage the login action state
+    const [state, action, pending] = useActionState(login, undefined)
     const errors = state?.errors;
-    console.log(state);
 
+    // Redirect to the profile page after successful login
+    useEffect(() => {
+        if (state?.success) {
+            router.push('/profile');
+        }
+    }, [state?.success, router]);
 
     return (
         <form action={action}>
@@ -28,11 +36,9 @@ const Login = () => {
                 {errors?.password && <p className="error">{errors.password[0]}</p>}
             </div>
             <button type="submit" disabled={pending}>
-                {pending ? "Logging in..." : "Login"}
+                {pending ? 'Logging in...' : 'Login'}
             </button>
             {state?.success && <p className="success">{state.message}</p>}
         </form>
     );
-};
-
-export default Login;
+}
